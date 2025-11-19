@@ -4,12 +4,10 @@ FROM python:3.10-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# 1. Install system dependencies required for OpenCV and Audio
-# libgl1-mesa-glx: Required for OpenCV
-# libglib2.0-0: Required for OpenCV
-# libsndfile1: Required for librosa/soundfile
+# 1. Install system dependencies
+# Fixed: 'libgl1-mesa-glx' -> 'libgl1' for newer Debian versions
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     libsndfile1 \
     && rm -rf /var/lib/apt/lists/*
@@ -22,7 +20,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # 3. Copy the application code
 COPY . .
 
-# 4. Create a non-root user for security (Hugging Face Spaces standard)
+# 4. Create a non-root user for security (Hugging Face Spaces requirement)
 RUN useradd -m -u 1000 user
 USER user
 ENV HOME=/home/user \
@@ -30,9 +28,8 @@ ENV HOME=/home/user \
 WORKDIR $HOME/app
 COPY --chown=user . $HOME/app
 
-# 5. Expose port 7860 (Hugging Face default)
+# 5. Expose port 7860
 EXPOSE 7860
 
 # 6. Command to run the app
-# Note: Workers set to 2 for concurrency
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860", "--workers", "2"]

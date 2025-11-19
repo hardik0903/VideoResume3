@@ -2,7 +2,6 @@ fastapi>=0.109.0
 uvicorn>=0.27.0
 python-multipart>=0.0.7
 numpy>=1.26.0
-# Use headless OpenCV for Docker/Cloud to avoid libGL errors
 opencv-python-headless>=4.9.0.80
 mediapipe>=0.10.9
 SpeechRecognition>=3.10.1
