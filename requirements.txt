@@ -2,6 +2,7 @@ fastapi>=0.109.0
 uvicorn>=0.27.0
 python-multipart>=0.0.7
 numpy>=1.26.0
+# Use standard opencv-python-headless for server environments
 opencv-python-headless>=4.9.0.80
 mediapipe>=0.10.9
 SpeechRecognition>=3.10.1
